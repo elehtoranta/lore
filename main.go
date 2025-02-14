@@ -47,5 +47,7 @@ func main() {
 
 	for !gs.Status.Finished {
 		gs.playTurn()
+		gs.printState()
+		fmt.Println("---------NEW TURN----------\n")
 	}
 }

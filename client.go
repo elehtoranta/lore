@@ -3,13 +3,13 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	// "fmt"
 	"io"
 	"log"
 	"net/http"
 	"os"
 )
 
+// For marsalling (JSON encoding) an action sent to the server
 type Action struct {
 	TakeCard bool `json:"takeCard"`
 }
@@ -45,7 +45,6 @@ func initGame(url string, gs *GameState) (string, error) {
 func postAction(action bool, url string) *http.Response {
 	a := Action{TakeCard: action}
 	msg, err := json.Marshal(a)
-	// fmt.Println("Action: ", string(msg))
 
 	req, err := http.NewRequest("POST", url, bytes.NewReader(msg))
 	if err != nil {
@@ -64,8 +63,6 @@ func postAction(action bool, url string) *http.Response {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	// fmt.Println(res)
 
 	return res
 }
