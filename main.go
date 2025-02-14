@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
+	"strconv"
 
 	"github.com/joho/godotenv"
 )
@@ -34,20 +36,35 @@ const (
 func main() {
 	// This will not override any keys, so an API key loaded to the test process via `env` command
 	// will be used instead of anything in .env. Github CI tests should be using a mock key.
-	err := godotenv.Load(".env")
+	if len(os.Args) <= 1 {
+		fmt.Println("Please give the number of games to play as an argument.")
+		return
+	}
+
+	// The number of games played is given as the only argument.
+	playNGames, err := strconv.Atoi(os.Args[1])
+	if err != nil || playNGames < 1 || playNGames > 100 {
+		fmt.Println("Please give a number between 1-100 as the number of games.")
+		return
+	}
+
+	err = godotenv.Load(".env")
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}
-	var gs GameState
-	gameId, err := initGame(URL+"/game", &gs)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fmt.Println("Game ID: ", gameId)
 
-	for !gs.Status.Finished {
-		gs.playTurn()
-		gs.printState()
-		fmt.Println("---------NEW TURN----------\n")
+	for i := 0; i < playNGames; i++ {
+		var gs GameState
+		gameId, err := initGame(URL+"/game", &gs)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println("Game ID: ", gameId)
+
+		for !gs.Status.Finished {
+			gs.playTurn()
+			gs.printState()
+			fmt.Println("---------NEW TURN----------\n")
+		}
 	}
 }

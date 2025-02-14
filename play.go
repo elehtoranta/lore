@@ -35,9 +35,9 @@ func (p Player) score() int16 {
 // Prints the game state in a somewhat sane form
 func (gs *GameState) printState() {
 	fmt.Println("Cards left: ", gs.Status.CardsLeft)
-	fmt.Println("Cards left: ", gs.Status.CardsLeft)
 	fmt.Println("Money on table: ", gs.Status.Money)
 	fmt.Println("Card value: ", gs.Status.Card)
+	fmt.Println()
 	for _, p := range gs.Status.Players {
 		fmt.Printf("%s: %d coins\n", p.Name, p.Money)
 		fmt.Println("Score: ", p.score())
@@ -129,6 +129,7 @@ func (p Player) decidePlay(gs *GameState) bool {
 		return true
 	}
 	// Otherwise just bet.
+	fmt.Println("BET")
 	return false
 }
 
