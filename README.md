@@ -25,6 +25,8 @@ Takes the number of games to play as a parameter. Accepts a number from 1 to 100
 ## Notes
 The shell output is a text wall with pretty much all the information about the execution, which can naturally be grepped by a nifty developer.
 
+_This project is a preassignment submission for [Monad](https://monad.fi/) Summer trainee position._
+
 ## Author
 Erkka Lehtoranta
 [GitHub](https://github.com/elehtoranta)
