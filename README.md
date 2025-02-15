@@ -2,14 +2,28 @@
 ## Description
 This is the solution the space squirrels have been looking for. The mediocre gambling bot.
 
-## Usage
-1. Ensure you have Go installed, minimum of version 1.21.x. Check with `go version`.
+## Installation
+1. Ensure you have (https://go.dev/doc/install)[Go] installed, minimum of version 1.21.x. Check with `go version`.
 2. Clone the repo.
-3. In the project root, create a `.env` file for the API key, and add an environment variable to the file of form `LORE_API_KEY=[YOUR-KEY-HERE]`. Alternatively, you can run the binary with `env` to pass the API key from the command line.
+3. You **must** have your API key in an environment variable called `LORE_API_KEY`. This can be achieved (for example) by either:
+    1. in the project root, create a `.env` file, and add a line `LORE_API_KEY=<YOUR_KEY_HERE>`,
+    2. run the program through `env` (`env LORE_API_KEY=<YOUR_KEY_HERE> ...`)
 4. In project root, run:
    ```bash
-   go get .
-   go install
-   go run . [number-of-games]
+   go get . # Get dependencies
+   go build # Compile
    ```
-5. Watch it go BRRRR. With a _single_ thread. In Go, the promised language of concurrency.
+
+## Usage
+Takes the number of games to play as a parameter. Accepts a number from 1 to 100.
+```bash
+./lore <number-of-games> # OR go run . <number-of-games>
+```
+
+## Notes
+The shell output is a text wall with pretty much all the information about the execution, which can naturally be grepped by a nifty developer.
+
+## Author
+Erkka Lehtoranta
+[GitHub](https://github.com/elehtoranta)
+[LinkedIn](https://linkedin.com/in/lehtoranta)
