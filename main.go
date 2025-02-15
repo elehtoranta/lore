@@ -34,8 +34,6 @@ const (
 )
 
 func main() {
-	// This will not override any keys, so an API key loaded to the test process via `env` command
-	// will be used instead of anything in .env. Github CI tests should be using a mock key.
 	if len(os.Args) <= 1 {
 		fmt.Println("Please give the number of games to play as an argument.")
 		return
@@ -48,6 +46,8 @@ func main() {
 		return
 	}
 
+	// Loads LORE_API_KEY. This will not override any variables, so if present (e.g.
+	// given via `env` command), that will be used instead of value in .env file.
 	err = godotenv.Load(".env")
 	if err != nil {
 		log.Fatal("Error loading .env file")
