@@ -1,9 +1,11 @@
 # LORE - Ludicrously Offensive Retaliation Engine
-## Description
+
+![Lore, The Sqiuroid](https://github.com/user-attachments/assets/91bf59dc-6557-49ea-b218-06e41750d7c5)
+
 This is the solution the space squirrels have been looking for. The mediocre gambling bot.
 
 ## Installation
-1. Ensure you have (https://go.dev/doc/install)[Go] installed, minimum of version 1.21.x. Check with `go version`.
+1. Ensure you have [Go](https://go.dev/doc/install) installed, minimum of version 1.21.x. Check with `go version`.
 2. Clone the repo.
 3. You **must** have your API key in an environment variable called `LORE_API_KEY`. This can be achieved (for example) by either:
     1. in the project root, create a `.env` file, and add a line `LORE_API_KEY=<YOUR_KEY_HERE>`,
