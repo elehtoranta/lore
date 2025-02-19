@@ -24,8 +24,8 @@ go.work.sum
 # env file
 .env
 
-# You don't need to know my flaws <:'(
-todo.md
-
 # Air
 .air.toml
+
+# Releases
+releases
