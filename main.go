@@ -30,7 +30,8 @@ type Player struct {
 }
 
 const (
-	URL = "https://koodipahkina.monad.fi/api"
+	URL     = "https://koodipahkina.monad.fi/api"
+	API_KEY = "LORE_API_KEY"
 )
 
 func main() {
@@ -48,9 +49,13 @@ func main() {
 		return
 	}
 
-	err = godotenv.Load(".env")
-	if err != nil {
-		log.Fatal("Error loading .env file")
+	// Look for API_KEY in environment, and if missing, otherwise load from .env.
+	if _, found := os.LookupEnv(API_KEY); !found {
+		fmt.Printf("No %s in environment, searching from .env\n", API_KEY)
+		err = godotenv.Load(".env")
+		if err != nil {
+			log.Fatal("Error loading .env file")
+		}
 	}
 
 	for i := 0; i < playNGames; i++ {
@@ -62,9 +67,9 @@ func main() {
 		fmt.Println("Game ID: ", gameId)
 
 		for !gs.Status.Finished {
+			fmt.Println("---------NEW TURN----------")
 			gs.playTurn()
 			gs.printState()
-			fmt.Println("---------NEW TURN----------")
 		}
 	}
 }
