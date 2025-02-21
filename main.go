@@ -43,8 +43,8 @@ func main() {
 	}
 
 	// The number of games played is given as the only argument.
-	playNGames, err := strconv.Atoi(os.Args[1])
-	if err != nil || playNGames < 1 || playNGames > 100 {
+	nGames, err := strconv.Atoi(os.Args[1])
+	if err != nil || nGames < 1 || nGames > 100 {
 		fmt.Println("Please give a number between 1-100 as the number of games.")
 		return
 	}
@@ -58,18 +58,16 @@ func main() {
 		}
 	}
 
-	for i := 0; i < playNGames; i++ {
-		var gs GameState
-		gameId, err := initGame(URL+"/game", &gs)
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Println("Game ID: ", gameId)
+	// Create a channel for n games
+	gameChan := make(chan GameState, nGames)
 
-		for !gs.Status.Finished {
-			fmt.Println("---------NEW TURN----------")
-			gs.playTurn()
-			gs.printState()
-		}
+	// Play the games in goroutines
+	for i := 0; i < nGames; i++ {
+		fmt.Println("Playing game #", i)
+		go playGame(gameChan, cap(gameChan), i)
+	}
+	// Print state for all finished games received from channel.
+	for game := range gameChan {
+		game.printState()
 	}
 }

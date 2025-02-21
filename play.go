@@ -34,16 +34,19 @@ func (p Player) score() int16 {
 
 // Prints the game state in a somewhat sane form
 func (gs *GameState) printState() {
+	fmt.Println("Game ID: ", gs.GameId)
 	fmt.Println("Cards left: ", gs.Status.CardsLeft)
 	fmt.Println("Money on table: ", gs.Status.Money)
 	fmt.Println("Card value: ", gs.Status.Card)
+	fmt.Println("Players: ")
 	fmt.Println()
 	for _, p := range gs.Status.Players {
-		fmt.Printf("%s: %d coins\n", p.Name, p.Money)
-		fmt.Println("Score: ", p.score())
-		fmt.Println("Cards:")
+		fmt.Printf("%s:\n", p.Name)
+		fmt.Println("\tCoins: ", p.Money)
+		fmt.Println("\tScore: ", p.score())
+		fmt.Println("\tCards:")
 		for _, streak := range p.Cards {
-			fmt.Println("\t", streak)
+			fmt.Println("\t\t", streak)
 		}
 		fmt.Println()
 	}
@@ -104,7 +107,7 @@ func (player Player) getCost(gs *GameState) int8 {
 func (p Player) decidePlay(gs *GameState) bool {
 	// No money, no honey. Got to take.
 	if p.Money == 0 {
-		fmt.Println("NO MONEY, money: ", p.Money)
+		// fmt.Println("NO MONEY, money: ", p.Money)
 		return true
 	}
 
@@ -114,22 +117,22 @@ func (p Player) decidePlay(gs *GameState) bool {
 	// Unless a card fits to a streak...
 	distance := p.distanceFromStreak(gs.Status.Card)
 	if distance == ADJACENT {
-		fmt.Println("ADJACENT, distance: ", distance)
+		// fmt.Println("ADJACENT, distance: ", distance)
 		return true
 	}
 	// ...we simply skip every card outside of the range [10,20].
 	if gs.Status.Card < 10 || gs.Status.Card > 20 {
-		fmt.Println("OUT OF BOUNDS, Card: ", gs.Status.Card)
+		// fmt.Println("OUT OF BOUNDS, card: ", gs.Status.Card)
 		return false
 	}
 
 	// We take the ones within our range that are cheap enough.
 	if cost <= GOAL_COST {
-		fmt.Println("BELOW GOAL, cost: ", cost)
+		// fmt.Println("BELOW GOAL, cost: ", cost)
 		return true
 	}
 	// Otherwise just bet.
-	fmt.Println("BET")
+	// fmt.Println("BET, card: ", gs.Status.Card)
 	return false
 }
 
@@ -147,10 +150,9 @@ func (gs *GameState) update(res *http.Response) bool {
 // action, sends it to server and updates the game state with the response.
 // Returns the information whether the game has concluded.
 func (gs *GameState) playTurn() {
-
 	// Inspect game state and decide on the correct play
 	takeCard := gs.Status.Players[LORE].decidePlay(gs)
-	fmt.Println("Decision: ", takeCard)
+	fmt.Printf("Decision: %t (%s)\n", takeCard, gs.GameId[:5])
 
 	// POST the decision to server and return the response
 	response := postAction(takeCard, URL+"/game/"+gs.GameId+"/action")

@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -12,6 +13,26 @@ import (
 // For marsalling (JSON encoding) an action sent to the server
 type Action struct {
 	TakeCard bool `json:"takeCard"`
+}
+
+func playGame(gameChan chan GameState, nGames int, nthGame int) {
+	var gs GameState
+	gameId, err := initGame(URL+"/game", &gs)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println("Game ID: ", gameId)
+
+	for !gs.Status.Finished {
+		// fmt.Println("---------NEW TURN----------")
+		gs.playTurn()
+		// gs.printState()
+	}
+	gameChan <- gs
+
+	if nthGame == nGames-1 {
+		close(gameChan)
+	}
 }
 
 // Requests a new game and returns its ID on success.
